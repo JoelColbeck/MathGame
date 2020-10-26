@@ -8,7 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-    var ans: Int? = 2
+    var ans: UInt32 = 2
     @IBOutlet weak var userAnswer: UILabel!
     @IBOutlet weak var task: UILabel!
     
@@ -20,10 +20,18 @@ class ViewController: UIViewController {
             result = "Wrong"
         }
 
-        let alertMessage = UIAlertController(title: result!, message: "Answer: \(String(self.ans!))", preferredStyle: .alert)
+        let alertMessage = UIAlertController(title: result!, message: "Answer: \(String(self.ans))", preferredStyle: .alert)
 
         alertMessage.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-        self.present(alertMessage, animated: true, completion: nil)
+        self.present(alertMessage, animated: true, completion: newRound)
+    }
+    
+    func newRound() {
+        let a = arc4random_uniform(100)
+        let b = arc4random_uniform(100)
+        ans = a + b
+        task.text = "Solve this: \(a) + \(b)"
+        userAnswer.text = "?"
     }
     
     @IBAction func userInput(_ sender: UIButton) {
@@ -35,7 +43,9 @@ class ViewController: UIViewController {
     }
     
     @IBAction func deleteInput() {
-        userAnswer.text?.removeLast()
+        if !userAnswer.text!.isEmpty {
+            userAnswer.text?.removeLast()
+        }
     }
     
     
